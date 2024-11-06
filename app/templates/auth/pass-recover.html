@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AdminLTE 3 | General Form Elements</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback" />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename= 'plugins/fontawesome-free/css/all.min.css') }}" />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dist/css/adminlte.min.css') }}" />
+  </head>
+  <body>
+    <div class="col-md-6" style="margin: auto; margin-top: 15%">
+      <div class="card card-info">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div class="alert alert-danger">
+          {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
+        <div class="card-header">
+          <h3 class="card-title">Recuperar contraseña</h3>
+        </div>
+
+        <form method="POST" action="{{ url_for('pss-recover.index') }}">
+          {% if not preguntas %}
+          <div class="form-group">
+            <input
+              type="text"
+              name="username"
+              placeholder="Ingrese su usuario"
+              required
+              class="form-control" />
+          </div>
+          {% endif %} {% if preguntas %}
+          <div class="form-group">
+            {% for pregunta in preguntas %}
+            <label>{{ pregunta['pregunta'] }}</label>
+            <input
+              type="text"
+              name="respuesta_{{ loop.index }}"
+              required
+              class="form-control" />
+            {% endfor %}
+            <input type="hidden" name="username" value="{{ username }}" />
+          </div>
+          {% endif %}
+
+          <input
+            type="hidden"
+            name="action"
+            value="{{ 'validate_answers' if preguntas else 'recover_password' }}" />
+
+          <div class="card-footer">
+            <button type="submit" class="btn btn-info float-right">
+              {{ 'Validar Respuestas' if preguntas else 'Recuperar Contraseña'
+              }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename= 'plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename= 'plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  </body>
+</html>

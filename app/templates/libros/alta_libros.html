@@ -1,0 +1,80 @@
+{% extends 'base.html' %} {% block libros %}
+<div class="card card-primary">
+  <div class="card-header">
+    <h1 class="card-title">Registro de Libros</h1>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="alert alert-dismissible fade show" role="alert">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST" action="{{ url_for('alta_libros.index') }}">
+    <div class="card-body">
+      <div class="form-group">
+        <label>Título</label>
+        <input type="text" name="titulo" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Autores</label>
+        <input type="text" name="autores" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Género</label>
+        <input type="text" name="genero" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Editorial</label>
+        <input type="text" name="editorial" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Año de Publicación</label>
+        <input type="number" name="anio_publicacion" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>ISBN</label>
+        <input type="text" name="isbn" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Número de Páginas</label>
+        <input type="number" name="numero_paginas" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea name="descripcion" class="form-control"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Stock por Idioma</label>
+        <div id="idiomas">
+          <div class="idioma-entry">
+            <input type="text" name="idiomas" placeholder="Idioma" class="form-control" required />
+            <input type="number" name="cantidades" placeholder="Cantidad de Copias" class="form-control" required />
+          </div>
+        </div>
+        <button type="button" onclick="addIdioma()" class="btn btn-primary">Agregar Idioma</button>
+      </div>
+
+    <div class="card-footer">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+<script>
+  function addIdioma() {
+    const idiomasDiv = document.getElementById('idiomas');
+    const newEntry = document.createElement('div');
+    newEntry.classList.add('idioma-entry');
+    newEntry.innerHTML = `
+        <input type="text" name="idiomas" placeholder="Idioma" class="form-control" required />
+        <input type="number" name="cantidades" placeholder="Cantidad de Copias" class="form-control" required />
+    `;
+    idiomasDiv.appendChild(newEntry);
+  }
+</script>
+{% endblock %}
