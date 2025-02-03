@@ -1,0 +1,104 @@
+{% extends 'base.html' %} {% block alta_prestamos %}
+<div class="card card-primary">
+  <div class="card-header">
+    <h1 class="card-title">Registro de Prestamos</h1>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="alert alert-dismissible fade show" role="alert">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST" action="{{ url_for('prestamos.register') }}">
+    <div class="card-body">
+        <div class="form-group">
+            <!-- <label for="usuario_id">Usuario</label> -->
+            <input type="hidden" class="form-control" id="usuario_id" name="usuario_id" value="{{ session['user_id'] }}" readonly>
+          </div>
+      <div class="form-group">
+        <label>Fecha de Prestamo</label>
+        <input type="date" name="fecha_prestamo" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Fecha de Devolucion</label>
+        <input type="date" name="fecha_devolucion" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="estado">Estado</label>
+        <select class="form-control" id="estado" name="estado">
+          <option value="activo" selected>Activo</option>
+          <option value="anulado">Anulado</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="cliente_id">Cliente</label>
+        <select class="form-control" id="cliente_id" name="cliente_id">
+          {% for cliente in clientes %}
+            <option value="{{ cliente.id }}">{{ cliente.nombres }} {{ cliente.apellidos }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="libro_id">Libro seleccionado</label>
+        <input type="text" id="libro_id_display" class="form-control" readonly placeholder="Seleccione un libro" />
+        <input type="hidden" id="libro_id" name="libro_id" required>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">Buscar Libro</button>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button type="submit" class="btn btn-primary">Registrar prestamo</button>
+    </div>
+  </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Buscar Libro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="searchLibroModal" class="form-control" placeholder="Buscar libro, autor, editorial..." onkeyup="filterBooksModal()">
+                <ul id="bookList" class="list-group mt-2">
+                    {% for libro in libros %}
+                        <li class="list-group-item" onclick="selectBook('{{ libro.id }}', '{{ libro.titulo }}')">
+                            <strong>{{ libro.titulo }}</strong><br>
+                            <small>Autor: {{ libro.autores }}, Editorial: {{ libro.editorial }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function filterBooksModal() {
+    const input = document.getElementById('searchLibroModal');
+    const filter = input.value.toLowerCase();
+    const ul = document.getElementById("bookList");
+    const li = ul.getElementsByTagName("li");
+
+    for (let i = 0; i < li.length; i++) {
+        const title = li[i].getElementsByTagName("strong")[0].textContent.toLowerCase();
+        const author = li[i].getElementsByTagName("small")[0].textContent.toLowerCase();
+        li[i].style.display = title.includes(filter) || author.includes(filter) ? "" : "none";
+    }
+}
+
+function selectBook(id, title) {
+    document.getElementById('libro_id').value = id; // Asigna el ID al campo oculto
+    document.getElementById('libro_id_display').value = title; // Muestra el título en el input readonly
+    $('#searchModal').modal('hide'); // Cierra el modal
+}
+</script>
+{% endblock %}

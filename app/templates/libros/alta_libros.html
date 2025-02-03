@@ -40,41 +40,26 @@
         <label>ISBN</label>
         <input type="text" name="isbn" class="form-control" />
       </div>
-      <div class="form-group">
+      <div class="form-group col-5">
         <label>Número de Páginas</label>
         <input type="number" name="numero_paginas" class="form-control" />
       </div>
+      
       <div class="form-group">
         <label>Descripción</label>
         <textarea name="descripcion" class="form-control"></textarea>
       </div>
-
-      <div class="form-group">
-        <label>Stock por Idioma</label>
-        <div id="idiomas">
-          <div class="idioma-entry">
-            <input type="text" name="idiomas" placeholder="Idioma" class="form-control" required />
-            <input type="number" name="cantidades" placeholder="Cantidad de Copias" class="form-control" required />
-          </div>
-        </div>
-        <button type="button" onclick="addIdioma()" class="btn btn-primary">Agregar Idioma</button>
+      <div class="input-group mb-3">
+        <label for="rol_id">Estado</label>
+          <select name="libro_estado" id="libro_estado">
+              <option value="1">Habilitado</option>
+              <option value="2">Deshabilitado</option>
+              <option value="3">Solo en biblioteca</option>
+          </select>
       </div>
-
     <div class="card-footer">
       <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
 </div>
-<script>
-  function addIdioma() {
-    const idiomasDiv = document.getElementById('idiomas');
-    const newEntry = document.createElement('div');
-    newEntry.classList.add('idioma-entry');
-    newEntry.innerHTML = `
-        <input type="text" name="idiomas" placeholder="Idioma" class="form-control" required />
-        <input type="number" name="cantidades" placeholder="Cantidad de Copias" class="form-control" required />
-    `;
-    idiomasDiv.appendChild(newEntry);
-  }
-</script>
 {% endblock %}

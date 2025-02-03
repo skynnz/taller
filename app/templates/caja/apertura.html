@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block apertura_caja %}
+<div class="container">
+    <h2>Apertura de Caja</h2>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert alert-dismissible fade show" role="alert">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('caja.abrir_caja') }}">
+        <div class="form-group">
+            <label for="usuario_id">ID del Usuario</label>
+            <input type="hidden" class="form-control" id="usuario_id" name="usuario_id" value="{{ session['user_id'] }}" readonly required>
+        </div>
+        <div class="form-group">
+            <label for="monto_apertura">Monto de Apertura</label>
+            <input type="number" class="form-control" id="monto_apertura" name="monto_apertura" step="0.01" min="0" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Abrir Caja</button>
+    </form>
+</div>
+{% endblock %}

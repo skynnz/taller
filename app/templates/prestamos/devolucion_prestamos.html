@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block devolucion_prestamos %}
+<div class="card card-primary">
+    <div class="card-header">
+        <h1 class="card-title">Devolución de Préstamos</h1>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert alert-dismissible fade show" role="alert">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Formulario para buscar el préstamo -->
+    <form method="POST" action="{{ url_for('prestamos.buscar_prestamo') }}">
+        <div class="card-body">
+            <div class="form-group">
+                <label for="busqueda">Buscar por ID o Nombre del Cliente</label>
+                <input type="text" class="form-control" id="busqueda" name="busqueda" required>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Buscar Préstamo</button>
+        </div>
+    </form>
+
+    {% if prestamos %}
+        <h3>Préstamos Activos Encontrados:</h3>
+        <ul class="list-group">
+            {% for prestamo, dias_atraso in prestamos %}
+                <li class="list-group-item">
+                    <strong>ID:</strong> {{ prestamo['id'] }} - 
+                    <strong>Libro:</strong> {{ prestamo['libro_id'] }} - 
+                    <strong>Cliente:</strong> {{ prestamo['cliente_id'] }} - 
+                    <strong>Días de Atraso:</strong> {{ dias_atraso }}
+                    <form method="POST" action="{{ url_for('prestamos.return_book', prestamo_id=prestamo['id']) }}">
+                        <button type="submit" class="btn btn-success btn-sm">Registrar Devolución</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se encontraron préstamos activos.</p>
+    {% endif %}
+</div>
+{% endblock %}

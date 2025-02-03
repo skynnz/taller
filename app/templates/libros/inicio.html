@@ -1,0 +1,193 @@
+{% extends 'base.html' %} {% block list_libros %}
+<div class="card-header">
+  <h3 class="card-title">Listado de libros</h3>
+</div>
+<!-- Tabla de libros -->
+<div class="card-body">
+  <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+    <div class="row">
+      <div class="col-sm-12">
+        <table
+          id="example1"
+          class="table table-bordered table-striped dataTable dtr-inline"
+          aria-describedby="example1_info"
+        >
+          <thead>
+            <tr>
+              <th
+                class="sorting sorting_asc"
+                tabindex="0"
+                aria-controls="example1"
+                rowspan="1"
+                colspan="1"
+                aria-sort="ascending"
+                aria-label="Rendering engine: activate to sort column descending"
+              >
+                ISBN
+              </th>
+              <th
+                class="sorting"
+                tabindex="0"
+                aria-controls="example1"
+                rowspan="1"
+                colspan="1"
+                aria-label="Browser: activate to sort column ascending"
+              >
+                Titulo
+              </th>
+              <th
+                class="sorting"
+                tabindex="0"
+                aria-controls="example1"
+                rowspan="1"
+                colspan="1"
+                aria-label="Platform(s): activate to sort column ascending"
+              >
+                Autor/es
+              </th>
+              <th
+                class="sorting"
+                tabindex="0"
+                aria-controls="example1"
+                rowspan="1"
+                colspan="1"
+                aria-label="Engine version: activate to sort column ascending"
+              >
+                Editorial
+              </th>
+              <th
+                class="sorting"
+                tabindex="0"
+                aria-controls="example1"
+                rowspan="1"
+                colspan="1"
+                aria-label="CSS grade: activate to sort column ascending"
+              >
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for libro in libros %}
+              <tr class="{% if loop.index % 2 == 0 %}even{% else %}odd{% endif %}">
+                <td class="dtr-control sorting_1" tabindex="0">{{ libro.isbn }}</td>
+                <td>{{ libro.titulo }}</td>
+                <td>{{ libro.autores }}</td>
+                <td>{{ libro.editorial }}</td>
+                <td>
+                  <a href="{{ url_for('alta_libros.edit', book_id=libro.id) }}" class="btn btn-primary">Editar</a>
+                  <a href="{{ url_for('alta_libros.delete', book_id=libro.id) }}" class="btn btn-danger">Eliminar</a>
+                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#stockModal{{ libro.id }}" 
+                    onclick="setBookId({{ libro.id }})">Agregar Stock</button>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Tabla de libros -->
+{% for libro in libros %}
+<div class="modal fade" id="stockModal{{ libro.id }}" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Stock de Libro</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="" id="stockForm{{ libro.id }}">
+          <input type="text" id="book_id{{ libro.id }}" name="book_id" value="{{ libro.id }}" readonly>
+          <div class="form-group">
+            <label for="cantidad_copias">Cantidad de Copias</label>
+            <input type="number" class="form-control" id="cantidad_copias" name="cantidad_copias" required>
+          </div>
+          <div class="form-group">
+            <label for="idioma">Idioma</label>
+            <input type="text" class="form-control" id="idioma" name="idioma" required>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+<script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{ url_for('static', filename='plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script>
+  function setBookId(bookId) {
+    document.getElementById('book_id' + bookId).value = bookId;
+    // Actualiza la acción del formulario para incluir el ID del libro
+    document.getElementById('stockForm' + bookId).action = "{{ url_for('alta_libros.stock', book_id='') }}" + bookId;
+  }
+</script>
+<script>
+  $(document).ready(function() {
+    // Inicializar DataTables
+    $('#example1').DataTable({
+      "responsive": true,
+      "autoWidth": false,
+      "language": {
+        "search": "Buscar:",
+        "lengthMenu": "Mostrar _MENU_ registros",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+        "paginate": {
+          "first": "Primero",
+          "last": "Último",
+          "next": "Siguiente",
+          "previous": "Anterior"
+        }
+      }
+    });
+
+    // Inicializar Select2
+    $('#gru_cod').select2(); // Asegúrate de que el ID sea correcto
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+    // Configuración de Toastr
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right", // Cambia la posición según tus preferencias
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000", // Tiempo que se muestra el mensaje
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    };
+
+    // Mostrar mensajes de Toastr
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          toastr.{{ category }}("{{ message }}");
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  });
+</script>
+{% endblock %}

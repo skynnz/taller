@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% block informes %}
+<div class="card card-primary">
+  <div class="card-header">
+    <h1 class="card-title">Informes Generados</h1>
+  </div>
+
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="alert alert-dismissible fade show" role="alert">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+    <form method="POST" action="{{ url_for('informes.obtener_informes') }}" target="_blank">
+    <div class="card-body">
+      <div class="form-group">
+        <label>Estado</label>
+        <input type="text" name="libro_estado" class="form-control" required />
+      </div>
+      <div class="form-group">
+
+        <label>Autores</label>
+        <input type="text" name="autores" class="form-control" required />
+      </div>
+    <div class="card-footer">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

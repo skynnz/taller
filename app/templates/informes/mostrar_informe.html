@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Informe Generado</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Género</th>
+                <th>Editorial</th>
+                <th>Año</th>
+                <th>Edición</th>
+                <th>Páginas</th>
+                <th>Notas</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for informe in informes %}
+            <tr>
+                <td>{{ informe[0] }}</td>
+                <td>{{ informe[1] }}</td>
+                <td>{{ informe[2] }}</td>
+                <td>{{ informe[3] }}</td>
+                <td>{{ informe[4] }}</td>
+                <td>{{ informe[5] }}</td>
+                <td>{{ informe[6] }}</td>
+                <td>{{ informe[7] }}</td>
+                <td>{{ informe[8] }}</td>
+                <td>{{ informe[9] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><a href="{{ url_for('informes.obtener_informes') }}">Volver</a></p>
+</body>
+</html> 

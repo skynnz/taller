@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprobante de Cobro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .header {
+            text-align: center;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Libros Mágicos</h1>
+        <h2>Comprobante de Cobro de Multa</h2>
+    </div>
+    <div class="details">
+        <p><strong>Timbrado:</strong> {{ timbrado }}</p>
+        <p><strong>Fecha de Inicio:</strong> {{ fecha_inicio }}</p>
+        <p><strong>Fecha de Fin:</strong> {{ fecha_fin }}</p>
+        <p><strong>ID del Préstamo:</strong> {{ prestamo.id }}</p>
+        <p><strong>Libro Prestado:</strong> {{ libro.titulo }}</p>
+        <p><strong>Días de Atraso:</strong> {{ prestamo.dias_atraso }}</p>
+        <p><strong>Usuario que Cobró:</strong> {{ usuario.nombre }} {{ usuario.apellido }}</p>
+        <p><strong>Fecha/Hora:</strong> {{ fecha_hora }}</p>
+        <p><strong>Cliente:</strong> {{ cliente.nombre }} {{ cliente.apellido }}</p>
+        <p><strong>CI Nro:</strong> {{ cliente.ci }}</p>
+        <p><strong>Total:</strong> {{ prestamo.monto }}</p>
+    </div>
+    <div class="footer">
+        <p>Gracias por su preferencia.</p>
+    </div>
+</body>
+</html> 

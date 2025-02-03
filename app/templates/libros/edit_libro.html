@@ -1,7 +1,62 @@
-{% extends 'base.html' %} {% block content %}
-<h1>Dashboard</h1>
-{% endblock %} {% block image %}
-<img
-  src="{{ url_for('static', filename='dist/img/avatar5.png') }}"
-  alt="Logo" />
+{% extends 'base.html' %} {% block edit_libro %}
+
+<div class="card card-primary">
+  <div class="card-header">
+    <h1 class="card-title">Editar Libros</h1>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="alert alert-dismissible fade show" role="alert">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+<form method="POST">
+  <div class="form-group">
+    <label for="titulo">Título</label>
+    <input type="text" class="form-control" id="titulo" name="titulo" value="{{ libro.titulo }}" required>
+  </div>
+  <div class="form-group">
+    <label for="autores">Autores</label>
+    <input type="text" class="form-control" id="autores" name="autores" value="{{ libro.autores }}" required>
+  </div>
+  <div class="form-group">
+    <label for="genero">Género</label>
+    <input type="text" class="form-control" id="genero" name="genero" value="{{ libro.genero }}" required>
+  </div>
+  <div class="form-group">
+    <label for="editorial">Editorial</label>
+    <input type="text" class="form-control" id="editorial" name="editorial" value="{{ libro.editorial }}" required>
+  </div>
+  <div class="form-group">
+    <label for="anio_publicacion">Año de Publicación</label>
+    <input type="number" class="form-control" id="anio_publicacion" name="anio_publicacion" value="{{ libro.anio_publicacion }}" required>
+  </div>
+  <div class="form-group">
+    <label for="isbn">ISBN</label>
+    <input type="text" class="form-control" id="isbn" name="isbn" value="{{ libro.isbn }}" required>
+  </div>
+  <div class="form-group">
+    <label for="numero_paginas">Número de Páginas</label>
+    <input type="number" class="form-control" id="numero_paginas" name="numero_paginas" value="{{ libro.numero_paginas }}" required>
+  </div>
+  <div class="form-group">
+    <label for="descripcion">Descripción</label>
+    <textarea class="form-control" id="descripcion" name="descripcion" required>{{ libro.descripcion }}</textarea>
+  </div>
+  <div class="input-group mb-3">
+    <label for="libro_estado">Estado</label>
+      <select name="libro_estado" id="libro_estado">
+          <option value="{{ libro.libro_estado }}">{{ libro.libro_estado }}</option>
+          <option value="1">Habilitado</option>
+          <option value="2">Deshabilitado</option>
+          <option value="3">Solo en biblioteca</option>
+      </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+</form>
 {% endblock %}

@@ -17,11 +17,15 @@
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='dist/css/adminlte.min.css')}}" />
-
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename = 'plugins/select2/css/select2.min.css') }}" />
     {% endblock %} {% block cssL %} {% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
   </head>
   <body
     class="sidebar-mini sidebar-closed sidebar-collapse"
@@ -104,8 +108,7 @@
                   ><div class="search-title">
                     <strong class="text-light"></strong>N<strong
                       class="text-light"></strong
-                    >o<strong class="text-light"></strong>
-                    <strong class="text-light"></strong>e<strong
+                    >o<strong class="text-light"></strong>e<strong
                       class="text-light"></strong
                     >l<strong class="text-light"></strong>e<strong
                       class="text-light"></strong
@@ -129,29 +132,18 @@
 
           <!-- Sidebar Menu -->
           <nav class="mt-2">
-            <ul
-              class="nav nav-pills nav-sidebar flex-column"
-              data-widget="treeview"
-              role="menu"
-              data-accordion="false">
-              <!-- Add icons to the links using the .nav-icon class
-                 with font-awesome or any other icon font library -->
-              <li class="nav-item menu-open">
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Active Page</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Inactive Page</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                {% for ruta in g.rutas %}
+                    {% if loop.first or g.rutas[loop.index0 - 1].titulo != ruta.titulo %}
+                        <li class="nav-header">{{ ruta.titulo }}</li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a href="{{ url_for(ruta.url) }}" class="nav-link">
+                            <i class="nav-icon fas fa-circle"></i>
+                            <p>{{ ruta.subtitulo }}</p>
+                        </a>
+                    </li>
+                {% endfor %}
             </ul>
           </nav>
           <!-- /.sidebar-menu -->
@@ -175,17 +167,73 @@
         <div class="content">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-lg-6">
-                <div class="card"></div>
-                {% block libros %} {% endblock %}
-                <!-- /.card -->
+              <div class="col-12">
+                <div class="card">
+                  {% block list_libros %} {% endblock %}
+                </div>
               </div>
-              <!-- /.col-md-6 -->
-
-              <!-- /.col-md-6 -->
+              <div class="col-md-6">
+                {% block libros %} {% endblock %}
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block edit_libro %} {% endblock %}
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block stock_libros %} {% endblock %}
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block list_prestamos %} {% endblock %}
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block alta_prestamos %} {% endblock %}
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block edit_prestamos %} {% endblock %}
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block devolucion_prestamos %} {% endblock %}
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block apertura_caja %} {% endblock %}
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block cierre_caja %} {% endblock %}
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block alta_usuarios %} {% endblock %}
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block ubicaciones %} {% endblock %}
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card">
+                  {% block informes %} {% endblock %}
+                </div>
+              </div>
             </div>
             <!-- /.row -->
           </div>
+
           <!-- /.container-fluid -->
         </div>
         <!-- /.content -->
@@ -223,8 +271,13 @@
     <script src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{ url_for('static', filename='dist/js/adminlte.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     <script src="{{ url_for('static', filename = 'plugins/select2/js/select2.full.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
 
     <script>
       $(document).ready(function () {

@@ -18,13 +18,15 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        with get_db().cursor() as cursor:  # Uso de context manager
-            cursor.execute(
-                'SELECT * FROM "usuarios" WHERE id = %s', (user_id,)
-            )
+        with get_db().cursor() as cursor:
+            cursor.execute('''
+                SELECT u.*, ru.gru_cod
+                FROM usuarios u
+                JOIN grupos ru ON u.gru_cod = ru.gru_cod
+                WHERE u.id = %s
+            ''', (user_id,))
             g.user = cursor.fetchone()
-        
-        # Si el usuario no existe en la base de datos, limpiar la sesión
+
         if g.user is None:
             session.clear()
 
@@ -47,7 +49,7 @@ def login():
         
         with db.cursor() as cursor:
             cursor.execute(
-                'SELECT * FROM "usuarios" WHERE username = %s', (username,)
+                'SELECT * FROM "usuarios" WHERE username = %s and estado = 1', (username,)
             )
             user = cursor.fetchone()
 
@@ -93,38 +95,6 @@ def login():
         flash(error)
 
     return render_template('auth/login.html')
-
-@bp.route('/register', methods=('GET', 'POST'))
-@login_required
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['contra']
-        db = get_db()
-        error = None
-
-        if not username:
-            error = 'Username is required.'
-        elif not password:
-            error = 'Password is required.'
-
-        if error is None:
-            with db.cursor() as cursor:  # Uso de context manager
-                try:
-                    cursor.execute(
-                        "INSERT INTO usuarios (username, contra) VALUES (%s, %s)",
-                        (username, generate_password_hash(password)),
-                    )
-                except psycopg2.IntegrityError:
-                    db.rollback()
-                    error = f"User {username} is already registered."
-                else:
-                    db.commit()
-                    return redirect(url_for("auth.login"))
-
-        flash(error)
-
-    return render_template('auth/register.html')
 
 @bp.route('/logout')
 def logout():

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprobante de Devolución</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .header {
+            text-align: center;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Libros Mágicos</h1>
+        <h2>Comprobante de Devolución</h2>
+    </div>
+    <div class="details">
+        <p><strong>Nombre del Cliente:</strong> {{ cliente_nombres }} {{ cliente_apellidos }}</p>
+        <p><strong>Usuario que Procesó la Devolución:</strong> {{ usuario_full_name }}</p>
+        <p><strong>ID del Préstamo:</strong> {{ prestamo_id }}</p>
+        <p><strong>Libro Prestado:</strong> {{ libro_titulo }}</p>
+        <p>Se recibe el libro <strong>{{ libro_titulo }}</strong> y se reconoce la devolución del mismo.</p>
+    </div>
+    <div class="footer">
+        <p>Gracias por su preferencia.</p>
+    </div>
+</body>
+</html> 
