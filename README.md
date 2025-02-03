@@ -74,3 +74,7 @@ app/
 │ └── admin.py (Rutas para el panel de administración)
 ├── init.py (Configuración de la aplicación Flask)
 └── auth.py (Rutas de autenticación)
+
+
+utils
+https://recursospython.com/guias-y-manuales/crear-documentos-pdf-en-python-con-reportlab/
