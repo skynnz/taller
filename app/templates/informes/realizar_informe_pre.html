@@ -15,15 +15,15 @@
     {% endif %}
   {% endwith %}
 
-    <form method="POST" action="{{ url_for('informes.exportar_pdf_libros') }}" target="_blank">
+    <form method="POST" action="{{ url_for('informes.exportar_pdf_prestamos') }}" target="_blank">
     <div class="card-body">
       <div class="form-group">
         <label>Estado</label>
-        <select name="libro_estado" id="libro_estado" class="form-control" required>
+        <select name="filtro" id="filtro" class="form-control" required>
           <option value="">Seleccione un estado</option>
-          <option value="1">Habilitados</option>
-          <option value="2">Deshabilitados</option>
-          <option value="3">Solo en Biblioteca</option>
+          <option value="activo">Activo</option>
+          <option value="Pendiente de cobro">Pendiente de cobro</option>
+          <option value="Devuelto">Devuelto</option>
         </select>
       </div>
     <div class="card-footer">

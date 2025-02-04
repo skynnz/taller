@@ -155,15 +155,8 @@
       <div class="content-wrapper" style="min-height: 527px">
         <!-- Content Header (Page header) -->
         <div class="content-header">
-          <div class="container-fluid">
-            {% block content %} {% endblock %} {% block image %} {% endblock %}
-            <!-- /.row -->
-          </div>
           <!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
+           <!-- Main content -->
         <div class="content">
           <div class="container-fluid">
             <div class="row">
@@ -172,7 +165,7 @@
                   {% block list_libros %} {% endblock %}
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-12">
                 {% block libros %} {% endblock %}
               </div>
               <div class="col-12">
@@ -236,6 +229,10 @@
 
           <!-- /.container-fluid -->
         </div>
+        </div>
+        <!-- /.content-header -->
+
+        
         <!-- /.content -->
       </div>
       <!-- /.content-wrapper -->

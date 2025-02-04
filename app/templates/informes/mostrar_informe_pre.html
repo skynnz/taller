@@ -32,21 +32,19 @@
     </style>
 </head>
 <body>
-    <h1>Informe de Libros</h1>
+    <h1>Informe de Prestamos</h1>
     
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Título</th>
-                <th>Autor</th>
-                <th>Género</th>
-                <th>Editorial</th>
-                <th>Año</th>
-                <th>ISBN</th>
-                <th>Páginas</th>
-                <th>Notas</th>
+                <th>Fecha de Préstamo</th>
+                <th>Fecha de Devolucion</th>
                 <th>Estado</th>
+                <th>Nom_Usuario_Cargo</th>
+                <th>Nick_Usuario</th>
+                <th>Cliente Nombre</th>
             </tr>
         </thead>
         <tbody>
@@ -60,13 +58,11 @@
                 <td>{{ informe[5] }}</td>
                 <td>{{ informe[6] }}</td>
                 <td>{{ informe[7] }}</td>
-                <td>{{ informe[8] }}</td>
-                <td>{{ informe[9] }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <p><a href="{{ url_for('informes.formulario_libros') }}">Volver</a></p>
+    <p><a href="{{ url_for('informes.formulario_pre') }}">Volver</a></p>
 </body>
 </html> 
