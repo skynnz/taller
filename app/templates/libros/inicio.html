@@ -100,7 +100,7 @@
       </div>
       <div class="modal-body">
         <form method="POST" action="" id="stockForm{{ libro.id }}">
-          <input type="text" id="book_id{{ libro.id }}" name="book_id" value="{{ libro.id }}" readonly>
+          <input type="hidden" id="book_id{{ libro.id }}" name="book_id" value="{{ libro.id }}" readonly>
           <div class="form-group">
             <label for="cantidad_copias">Cantidad de Copias</label>
             <input type="number" class="form-control" id="cantidad_copias" name="cantidad_copias" required>
