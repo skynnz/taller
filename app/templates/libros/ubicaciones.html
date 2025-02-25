@@ -203,7 +203,9 @@
             <div class="form-group">
                 <label>Seleccionar Libro</label>
                 <select name="libro_id" id="libro_id" class="form-control select2" style="width: 100%;" required>
+                  <option value="" disabled selected>Seleccione un libro</option>
                   {% for libro in libros %}
+                    
                     <option value="{{ libro.id }}">{{ libro.titulo }}</option>
                   {% endfor %}
                 </select>
@@ -248,7 +250,7 @@
     document.getElementById('eliminarForm' + ubicacionId).action = "{{ url_for('alta_libros.eliminar_ubicacion', ubicacion_id='') }}" + ubicacionId;
     document.getElementById('editarForm' + ubicacionId).action = "{{ url_for('alta_libros.editar_ubicacion', ubicacion_id='') }}" + ubicacionId;
     document.getElementById('nuevaUbicacionForm').action = "{{ url_for('alta_libros.registrar_ubicacion') }}";
-
+  }
 
 
 </script>
@@ -270,9 +272,6 @@
         }
       }
     });
-
-    // Inicializar Select2
-    $('#seccion').select2(); // Asegúrate de que el ID sea correcto
   });
 </script>
 <script>
@@ -282,9 +281,6 @@
           placeholder: "Seleccionar un libro",
           allowClear: true
         });
-
-
-
     });
 </script>
 
