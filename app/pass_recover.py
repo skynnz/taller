@@ -85,7 +85,6 @@ def update_password():
         flash('Las contraseñas no coinciden.', 'error')
         return redirect(url_for('index'))
 
-    # Aquí puedes agregar lógica para encriptar la nueva contraseña
     hashed_password = generate_password_hash(new_password)
 
     db = get_db()

@@ -37,7 +37,6 @@
                 <option value="3" {% if usuario.gru_cod == 3 %}selected{% endif %}>Bibliotecario</option>
                 <option value="4" {% if usuario.gru_cod == 4 %}selected{% endif %}>Gerente</option>
                 <option value="5" {% if usuario.gru_cod == 5 %}selected{% endif %}>Asistente de Biblioteca</option>
-
             </select>
         </div>
         <div class="form-group">
@@ -47,9 +46,21 @@
                 <option value="2" {% if usuario.estado == 2 %}selected{% endif %}>Deshabilitado</option>
             </select>
         </div>
+        <div class="form-group">
+          <label for="pregunta">Preguntas de seguridad</label>
+          <select name="pregunta" id="pregunta" class="form-control" required>
+              <option value="1" {% if usuario.pregunta == 'Donde vives?' %}selected{% endif %}>Donde vives?</option>
+              <option value="2" {% if usuario.pregunta == 'Nombre primera mascota' %}selected{% endif %}>Nombre primera mascota</option>
+              <option value="3" {% if usuario.pregunta == 'Nombre de mama' %}selected{% endif %}>Nombre de mama</option>
+              <option value="4" {% if usuario.pregunta == 'Nombre de papa' %}selected{% endif %}>Nombre de papa</option>
+          </select>
+      </div>
+      <div class="form-group">
+        <label for="respuesta">Respuesta</label>
+        <input type="text" class="form-control" id="respuesta" name="respuesta" value="{{ usuario.respuesta }}" required>
+    </div>
         <button type="submit" class="btn btn-primary">Actualizar</button>
     </form>
 </div>
 
-
-{% endblock %} 
+{% endblock %}

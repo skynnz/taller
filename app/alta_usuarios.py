@@ -13,6 +13,8 @@ def register():
         email = request.form['email']
         fullname = request.form['fullname']
         gru_cod = request.form.get('gru_cod')  # Obtener el rol del formulario
+        pregunta = request.form.get('pregunta')
+        respuesta = request.form['respuesta']
         db = get_db()
         error = None
 
@@ -27,6 +29,10 @@ def register():
             error = 'El nombre completo es obligatorio.'
         elif not gru_cod:
             error = 'El rol es obligatorio.'
+        elif not pregunta:
+            error = 'Elija una pregunta'
+        elif not respuesta:
+            error = 'Indique una respuesta a la pregunta'
 
         if error is None:
             with db.cursor() as cursor:
@@ -41,6 +47,10 @@ def register():
                         cursor.execute(
                             "INSERT INTO usuarios (username, contra,email,full_name,gru_cod,estado) VALUES (%s, %s, %s, %s, %s, %s) returning id",
                             (username, generate_password_hash(password), email, fullname, gru_cod, 1),
+                        )
+                        user_id = cursor.fetchone()[0]
+                        cursor.execute(
+                            "insert into preguntas_seguridad (user_id, pregunta, respuesta) values (%s, %s, %s) returning id", (user_id, pregunta, respuesta)
                         )
                         db.commit()
                         flash('Usuario registrado correctamente.')
@@ -94,19 +104,30 @@ def edit_usuario(usuario_id):
         username = request.form['username']
         gru_cod = request.form['gru_cod']
         estado = request.form['estado']
+        pregunta = request.form['pregunta']
+        respuesta = request.form['respuesta']
 
         with db.cursor() as cursor:
             cursor.execute(
                 "UPDATE usuarios SET full_name = %s, email = %s, username = %s, gru_cod = %s, estado = %s WHERE id = %s",
                 (fullname, email, username, gru_cod, estado, usuario_id)
             )
+            cursor.execute(
+                "UPDATE preguntas_seguridad SET pregunta = %s, respuesta = %s WHERE user_id = %s",
+                (pregunta, respuesta, usuario_id)
+            )
             db.commit()
 
         flash('Datos del usuario actualizados correctamente.')
         return redirect(url_for('alta_usuarios.listar_usuarios'))
 
-
     with db.cursor() as cursor:
-        cursor.execute("SELECT * FROM usuarios WHERE id = %s", (usuario_id,))
+        cursor.execute('''
+            SELECT u.id, u.username, u.email, u.full_name, u.gru_cod, u.estado, ps.pregunta, ps.respuesta
+            FROM usuarios u
+            JOIN preguntas_seguridad ps ON u.id = ps.user_id
+            WHERE u.id = %s
+        ''', (usuario_id,))
         usuario = cursor.fetchone()
+    
     return render_template('usuarios/edit_usuarios.html', usuario=usuario)

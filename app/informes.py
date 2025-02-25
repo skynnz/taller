@@ -14,6 +14,7 @@ def formulario_pre():
 
 @bp.route('/exportar_pdf_libros', methods=['GET', 'POST'])
 def exportar_pdf_libros():
+    informes = []
     if request.method == 'POST':
         estado = request.form.get('libro_estado')
 
@@ -37,6 +38,11 @@ def exportar_pdf_libros():
                     FROM libros WHERE libro_estado=%s''', (estado,))
             informes = cursor.fetchall()
 
+    # Verificar si se encontraron informes
+        if not informes:
+            flash("No se encontraron informes para los criterios dados.", "warning")
+            return redirect(url_for('informes.formulario_pre'))
+        
          # Renderizar la plantilla HTML con los datos
     html = render_template('informes/mostrar_informe.html', informes=informes)
 
